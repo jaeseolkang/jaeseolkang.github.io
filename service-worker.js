@@ -1,7 +1,7 @@
 // 2026-06-19 10:00 KST | PWA 서비스워커 추가: 오프라인 캐싱 + 설치 지원
 'use strict';
 
-const CACHE_NAME = 'gaegyebu-v12';
+const CACHE_NAME = 'gaegyebu-v13';
 const ASSETS = [
   './',
   './index.html',
