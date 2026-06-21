@@ -1,457 +1,728 @@
-<!-- 2026-06-11 09:00 KST | 수정: Google Search Console 인증 메타태그 추가, 사용설명서 링크 GitHub 직접 연결 -->
+<!-- 2026-06-19 10:00 KST | PWA 지원 추가: 서비스워커 등록, Apple/Android 메타태그, 설치 배너 -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="google-site-verification" content="XY8K9_4qqOmSaxwbdLAP3FTZkWwzNIGVmquQlXg7ROE" />
-  <title>WorshipPPT — 한국 교회 예배 PPT 관리 프로그램</title>
-  <meta name="description" content="WorshipPPT는 한국 교회 예배를 위한 PowerPoint 자동화 관리 프로그램입니다. 찬양·성경·찬송 검색, 모바일 미러링, 슬라이드 내보내기 기능을 제공합니다. Korean church worship PPT management software for Windows." />
-  <meta name="keywords" content="예배 PPT, 교회 PPT, 워십PPT, WorshipPPT, Korean church presentation, worship presentation software, 찬양 PPT, 예배 프로그램, church PPT software Korea, 한국 교회 프로그램" />
-  <meta name="author" content="jaeseolkang" />
-  <meta property="og:title" content="WorshipPPT — 한국 교회 예배 PPT 관리 프로그램" />
-  <meta property="og:description" content="찬양·성경·찬송 검색, 모바일 미러링, PPT 자동화. 예배 현장에서 바로 쓰는 Windows 전용 프로그램." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://jaeseolkang.github.io/" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>주원교회 회계부</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2D6CDF">
+<!-- ===== PWA: Apple / Android ===== -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="주원교회 회계부">
+<!-- Apple Touch Icon (SVG inline data URI) -->
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='38' fill='%232D6CDF'/><text x='90' y='125' font-size='100' text-anchor='middle'>📒</text></svg>">
+<style>
+:root{
+  --bg:#F7F8FA;
+  --card:#FFFFFF;
+  --primary:#2D6CDF;
+  --primary-dark:#1F52B0;
+  --primary-light:#EAF1FD;
+  --income:#1FAA59;
+  --income-light:#E8F7EE;
+  --expense:#E5484D;
+  --expense-light:#FDEAEB;
+  --text-1:#1A1D29;
+  --text-2:#6B7280;
+  --text-3:#9CA3AF;
+  --border:#EEF0F3;
+  --shadow: 0 2px 8px rgba(20,24,40,0.04), 0 1px 2px rgba(20,24,40,0.03);
+  --shadow-lg: 0 8px 24px rgba(20,24,40,0.08);
+  --radius-sm:10px;
+  --radius-md:16px;
+  --radius-lg:22px;
+  --tab-h:64px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+}
 
-  <!-- Schema.org SoftwareApplication -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "WorshipPPT",
-    "alternateName": ["워십PPT", "워쉽PPT", "교회 예배 PPT 프로그램"],
-    "description": "Korean church worship PowerPoint presentation management system. Features include praise song / hymn / Bible verse search, mobile mirroring for congregation display, automated slide export with JPEG cache, and live PowerPoint COM automation for real-time worship control.",
-    "applicationCategory": "MultimediaApplication",
-    "applicationSubCategory": "ChurchPresentationSoftware",
-    "operatingSystem": "Windows 10, Windows 11",
-    "inLanguage": ["ko", "en"],
-    "offers": {
-      "@type": "Offer",
-      "url": "https://smartstore.naver.com/dream-mart-switch/products/13364764824",
-      "priceCurrency": "KRW",
-      "availability": "https://schema.org/InStock"
-    },
-    "author": {
-      "@type": "Person",
-      "name": "jaeseolkang"
-    },
-    "softwareRequirements": "Microsoft PowerPoint, .NET 6+",
-    "featureList": [
-      "찬양 PPT 자동 생성 및 수정",
-      "성경 / 찬송가 검색",
-      "모바일 미러링 (iOS / Android)",
-      "슬라이드 JPEG 캐시 내보내기",
-      "예배 순서 PPT 관리",
-      "로컬 HTTP 서버 연동",
-      "PowerPoint COM 자동화",
-      "Korean praise song management",
-      "Mobile congregation display mirror",
-      "Live worship slide control"
-    ],
-    "url": "https://jaeseolkang.github.io/"
-  }
-  </script>
+*{box-sizing:border-box; margin:0; padding:0;}
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+html,body{
+  font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Segoe UI",Roboto,sans-serif;
+  background:var(--bg);
+  color:var(--text-1);
+  -webkit-font-smoothing:antialiased;
+  height:100%;
+  overscroll-behavior-y:none;
+}
 
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body{
+  position:fixed;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+}
 
-    :root {
-      --ink:      #1a1a2e;
-      --ink2:     #3d3d5c;
-      --ink3:     #7b7b9d;
-      --gold:     #c9a84c;
-      --gold-lt:  #f0d98a;
-      --bg:       #f7f6f2;
-      --bg2:      #eeecea;
-      --white:    #ffffff;
-      --radius:   12px;
-    }
+.tabular{ font-variant-numeric: tabular-nums; font-feature-settings:"tnum"; }
 
-    html { scroll-behavior: smooth; }
+button{font-family:inherit; border:none; background:none; cursor:pointer; color:inherit;}
+button svg{width:20px; height:20px; display:block; flex-shrink:0;}
+input,textarea,select{font-family:inherit; color:inherit;}
 
-    body {
-      font-family: 'Noto Sans KR', 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--ink);
-      line-height: 1.7;
-    }
+#app{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  max-width:560px;
+  width:100%;
+  margin:0 auto;
+  position:relative;
+  background:var(--bg);
+  overflow:hidden;
+}
 
-    /* ── HERO ── */
-    .hero {
-      background: var(--ink);
-      color: var(--white);
-      padding: 80px 24px 72px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 60% 0%, #2e2e52 0%, transparent 65%),
-                  radial-gradient(ellipse at 20% 100%, #1e1e38 0%, transparent 60%);
-      pointer-events: none;
-    }
-    .hero-cross {
-      font-size: 2rem;
-      margin-bottom: 20px;
-      opacity: .55;
-      letter-spacing: .3em;
-    }
-    .hero h1 {
-      font-size: clamp(2.2rem, 6vw, 4rem);
-      font-weight: 700;
-      letter-spacing: -.02em;
-      line-height: 1.15;
-      position: relative;
-    }
-    .hero h1 span {
-      color: var(--gold-lt);
-    }
-    .hero-sub {
-      margin-top: 16px;
-      font-size: 1.1rem;
-      color: #c2c2d8;
-      font-weight: 300;
-      position: relative;
-    }
-    .hero-en {
-      margin-top: 8px;
-      font-family: 'Inter', sans-serif;
-      font-size: .9rem;
-      color: #8888aa;
-      position: relative;
-    }
-    .hero-cta {
-      margin-top: 40px;
-      display: flex;
-      gap: 14px;
-      justify-content: center;
-      flex-wrap: wrap;
-      position: relative;
-    }
-    .btn {
-      display: inline-block;
-      padding: 13px 30px;
-      border-radius: 8px;
-      font-size: .95rem;
-      font-weight: 500;
-      text-decoration: none;
-      transition: transform .15s, box-shadow .15s;
-    }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.25); }
-    .btn-primary {
-      background: var(--gold);
-      color: var(--ink);
-    }
-    .btn-secondary {
-      background: transparent;
-      color: #c2c2d8;
-      border: 1px solid #3a3a5c;
-    }
+/* ===== Top App Bar ===== */
+.appbar{
+  padding: calc(14px + var(--safe-top)) 20px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:var(--bg);
+  flex-shrink:0;
+}
+.appbar h1{
+  font-size:20px;
+  font-weight:800;
+  letter-spacing:-0.3px;
+}
+.appbar .icon-btn{
+  width:38px;height:38px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--card);
+  box-shadow:var(--shadow);
+}
 
-    /* ── SECTION ── */
-    section { padding: 72px 24px; }
-    .container { max-width: 900px; margin: 0 auto; }
-    .section-label {
-      font-size: .75rem;
-      font-weight: 500;
-      letter-spacing: .15em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 10px;
-    }
-    h2 {
-      font-size: clamp(1.6rem, 4vw, 2.2rem);
-      font-weight: 700;
-      letter-spacing: -.02em;
-      line-height: 1.2;
-      color: var(--ink);
-    }
-    .lead {
-      margin-top: 14px;
-      font-size: 1.05rem;
-      color: var(--ink2);
-      max-width: 620px;
-    }
+/* ===== Page container ===== */
+.pages{
+  flex:1;
+  overflow:hidden;
+  position:relative;
+}
+.page{
+  position:absolute;
+  inset:0;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  padding: 4px 20px calc(var(--tab-h) + var(--safe-bottom) + 28px);
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(6px);
+  transition:opacity .18s ease, transform .18s ease;
+}
+.page.active{
+  opacity:1;
+  pointer-events:auto;
+  transform:translateY(0);
+}
 
-    /* ── FEATURES GRID ── */
-    .features { background: var(--white); }
-    .feat-grid {
-      margin-top: 44px;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 20px;
-    }
-    .feat-card {
-      background: var(--bg);
-      border-radius: var(--radius);
-      padding: 26px 24px;
-      border: 1px solid var(--bg2);
-    }
-    .feat-icon {
-      font-size: 1.6rem;
-      margin-bottom: 12px;
-    }
-    .feat-card h3 {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-    .feat-card p {
-      font-size: .875rem;
-      color: var(--ink3);
-      line-height: 1.6;
-    }
+/* ===== Cards ===== */
+.card{
+  background:var(--card);
+  border-radius:var(--radius-md);
+  box-shadow:var(--shadow);
+  padding:18px;
+}
 
-    /* ── HOW IT WORKS ── */
-    .how { background: var(--bg); }
-    .steps {
-      margin-top: 44px;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 24px;
-      counter-reset: step;
-    }
-    .step {
-      counter-increment: step;
-      padding: 24px;
-      background: var(--white);
-      border-radius: var(--radius);
-      border: 1px solid var(--bg2);
-      position: relative;
-    }
-    .step::before {
-      content: counter(step);
-      display: block;
-      font-family: 'Inter', sans-serif;
-      font-size: .7rem;
-      font-weight: 600;
-      letter-spacing: .1em;
-      color: var(--gold);
-      border: 1px solid var(--gold);
-      border-radius: 50%;
-      width: 26px; height: 26px;
-      line-height: 24px;
-      text-align: center;
-      margin-bottom: 14px;
-    }
-    .step h3 { font-size: .95rem; font-weight: 600; margin-bottom: 6px; }
-    .step p  { font-size: .85rem; color: var(--ink3); }
+/* ===== Summary hero ===== */
+.summary-card{
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  border-radius:var(--radius-lg);
+  padding:22px 22px 20px;
+  color:#fff;
+  position:relative;
+  overflow:hidden;
+  margin-bottom:16px;
+}
+.summary-card::after{
+  content:"";
+  position:absolute;
+  width:180px;height:180px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.07);
+  right:-60px; top:-70px;
+}
+.summary-month{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:13px;
+  opacity:0.85;
+  margin-bottom:10px;
+}
+.summary-month button{
+  width:22px;height:22px;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0.9;
+}
+.summary-balance-label{font-size:13px; opacity:0.85; margin-bottom:4px;}
+.summary-balance{font-size:32px; font-weight:800; letter-spacing:-0.5px; margin-bottom:18px;}
+.summary-row{display:flex; gap:10px;}
+.summary-col{flex:1;}
+.summary-col-label{font-size:12px; opacity:0.85; display:flex; align-items:center; gap:5px; margin-bottom:3px;}
+.summary-col-value{font-size:17px; font-weight:700;}
+.dot{width:7px;height:7px;border-radius:50%; display:inline-block;}
 
-    /* ── SPEC TABLE ── */
-    .specs { background: var(--white); }
-    .spec-table {
-      margin-top: 36px;
-      width: 100%;
-      border-collapse: collapse;
-      font-size: .9rem;
-    }
-    .spec-table tr { border-bottom: 1px solid var(--bg2); }
-    .spec-table td { padding: 14px 8px; }
-    .spec-table td:first-child { color: var(--ink3); width: 38%; }
-    .spec-table td:last-child  { font-weight: 500; }
+/* ===== Section headers ===== */
+.section-title{
+  font-size:15px;
+  font-weight:700;
+  color:var(--text-1);
+  margin:22px 0 10px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.section-title .more{font-size:13px; font-weight:500; color:var(--text-3);}
 
-    /* ── DOWNLOAD ── */
-    .download {
-      background: var(--ink);
-      color: var(--white);
-      text-align: center;
-    }
-    .download h2 { color: var(--white); }
-    .download .lead { color: #9999bb; max-width: 500px; margin: 14px auto 0; }
-    .download .hero-cta { margin-top: 36px; }
+/* ===== Transaction list ===== */
+.tx-group-label{
+  font-size:12.5px;
+  color:var(--text-3);
+  font-weight:600;
+  padding:14px 2px 6px;
+}
+.tx-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 2px;
+  border-bottom:1px solid var(--border);
+}
+.tx-item:last-child{border-bottom:none;}
+.tx-icon{
+  width:42px;height:42px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:19px;
+  flex-shrink:0;
+}
+.tx-mid{flex:1; min-width:0;}
+.tx-cat{font-size:14.5px; font-weight:600; color:var(--text-1);}
+.tx-memo{font-size:12.5px; color:var(--text-3); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.tx-amt{font-size:15px; font-weight:700; flex-shrink:0;}
+.tx-amt.income{color:var(--primary);}
+.tx-amt.expense{color:var(--expense);}
 
-    /* ── FOOTER ── */
-    footer {
-      background: #13132a;
-      color: #55556a;
-      text-align: center;
-      padding: 32px 24px;
-      font-size: .8rem;
-      line-height: 2;
-    }
-    footer a { color: #7777aa; text-decoration: none; }
+.empty-state{
+  display:flex; flex-direction:column; align-items:center;
+  padding:60px 20px; text-align:center; color:var(--text-3);
+}
+.empty-state .emoji{font-size:40px; margin-bottom:12px;}
+.empty-state .msg{font-size:14px; line-height:1.6;}
 
-    /* ── DIVIDER ── */
-    .divider {
-      width: 40px; height: 3px;
-      background: var(--gold);
-      border-radius: 2px;
-      margin: 18px 0;
-    }
+/* ===== Bottom Tab Bar ===== */
+.tabbar{
+  position:absolute;
+  left:0; right:0; bottom:0;
+  height:calc(var(--tab-h) + var(--safe-bottom));
+  padding-bottom:var(--safe-bottom);
+  background:rgba(255,255,255,0.96);
+  backdrop-filter:blur(14px);
+  border-top:1px solid var(--border);
+  display:flex;
+  z-index:50;
+}
+.tab-btn{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  color:var(--text-3);
+  font-size:11px;
+  font-weight:600;
+  transition:color .15s ease;
+}
+.tab-btn.active{color:var(--primary);}
+.tab-btn svg{width:22px;height:22px;}
 
-    @media (max-width: 600px) {
-      section { padding: 52px 20px; }
-      .hero   { padding: 60px 20px 56px; }
-    }
-  </style>
+/* ===== FAB ===== */
+.fab{
+  position:absolute;
+  right:20px;
+  bottom:calc(var(--tab-h) + var(--safe-bottom) + 18px);
+  width:56px;height:56px;
+  border-radius:50%;
+  background:var(--primary);
+  color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 20px rgba(45,108,223,0.4);
+  z-index:40;
+  transition:transform .15s ease;
+}
+.fab:active{transform:scale(0.93);}
+.fab svg{width:26px;height:26px;}
+
+/* ===== Budget bars ===== */
+.budget-item{margin-bottom:18px;}
+.budget-top{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:7px;}
+.budget-name{font-size:14.5px; font-weight:700; display:flex; align-items:center; gap:7px;}
+.budget-nums{font-size:13px; color:var(--text-2);}
+.budget-nums b{color:var(--text-1); font-weight:700;}
+.budget-track{height:9px; border-radius:5px; background:var(--bg); overflow:hidden;}
+.budget-fill{height:100%; border-radius:5px; transition:width .4s ease;}
+
+/* ===== Stats ===== */
+.stat-bar-row{display:flex; align-items:center; gap:8px; padding:9px 0;}
+.stat-bar-label{width:90px; font-size:12.5px; font-weight:600; flex-shrink:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.stat-bar-track{flex:1; height:10px; border-radius:5px; background:var(--bg); overflow:hidden;}
+.stat-bar-fill{height:100%; border-radius:5px;}
+.stat-bar-pct{width:36px; text-align:right; font-size:12px; color:var(--text-3); flex-shrink:0;}
+
+.segctrl{
+  display:flex;
+  background:var(--bg);
+  border-radius:11px;
+  padding:3px;
+  margin-bottom:16px;
+}
+.segctrl button{
+  flex:1; padding:9px 0; font-size:13.5px; font-weight:700;
+  color:var(--text-2); border-radius:9px; transition:all .15s ease;
+}
+.segctrl button.active{background:var(--card); color:var(--text-1); box-shadow:var(--shadow);}
+
+/* ===== Modal / Sheet ===== */
+.sheet-backdrop{
+  position:absolute; inset:0; background:rgba(15,18,30,0.45);
+  z-index:90; opacity:0; pointer-events:none; transition:opacity .2s ease;
+}
+.sheet-backdrop.show{opacity:1; pointer-events:auto;}
+.sheet{
+  position:absolute; left:0; right:0; bottom:0;
+  background:var(--card);
+  border-radius:24px 24px 0 0;
+  z-index:91;
+  max-height:90%;
+  display:flex; flex-direction:column;
+  transform:translateY(100%);
+  transition:transform .26s cubic-bezier(.32,.72,0,1);
+  padding-bottom:var(--safe-bottom);
+  padding-top:var(--safe-top);
+}
+.sheet.show{transform:translateY(0);}
+#txSheet{ z-index:95; }
+.sheet-handle{width:36px;height:4px;background:var(--border); border-radius:3px; margin:10px auto 2px;}
+.sheet-head{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 20px 4px;
+}
+.sheet-head h3{font-size:17px; font-weight:800;}
+.sheet-close-btn{
+  display:flex; align-items:center; gap:3px; flex-shrink:0;
+  background:var(--bg); color:var(--text-2);
+  padding:7px 12px 7px 9px; border-radius:10px;
+  font-size:12.5px; font-weight:700; white-space:nowrap;
+}
+.sheet-close-btn svg{width:15px;height:15px;}
+.sheet-body{padding:8px 20px 24px; overflow-y:auto; flex:1; min-height:0;}
+
+.formrow{margin-bottom:18px;}
+.formrow label{display:block; font-size:13px; font-weight:700; color:var(--text-2); margin-bottom:8px;}
+.amt-input-wrap{display:flex; align-items:baseline; gap:6px; border-bottom:2px solid var(--border); padding-bottom:10px;}
+.amt-input-wrap input{
+  flex:1; font-size:30px; font-weight:800; text-align:right; outline:none; min-width:0;
+}
+.amt-input-wrap .won{font-size:18px; font-weight:700; color:var(--text-2);}
+.amt-input-wrap.focus{border-color:var(--primary);}
+
+.typeswitch{display:flex; gap:8px; margin-bottom:18px;}
+.typeswitch button{
+  flex:1; padding:11px 0; border-radius:11px; font-size:14px; font-weight:700;
+  background:var(--bg); color:var(--text-2);
+}
+.typeswitch button.active.expense{background:var(--expense-light); color:var(--expense);}
+.typeswitch button.active.income{background:var(--primary-light); color:var(--primary);}
+
+.catgrid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px;}
+.catchip{
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+  padding:10px 2px; border-radius:14px; font-size:12px; font-weight:600; color:var(--text-2);
+  border:2px solid transparent;
+}
+.catchip .ic{width:46px;height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px;}
+.catchip.selected{border-color:var(--primary); background:var(--primary-light); color:var(--primary);}
+
+.textinput{
+  width:100%; background:var(--bg); border-radius:12px; padding:13px 14px; font-size:14.5px; outline:none;
+}
+.dateinput{width:100%; background:var(--bg); border-radius:12px; padding:13px 14px; font-size:14.5px; outline:none; border:none;}
+
+.btn-primary{
+  width:100%; padding:16px 0; border-radius:14px; background:var(--primary); color:#fff;
+  font-size:15.5px; font-weight:800; margin-top:6px;
+}
+.btn-primary:disabled{background:#C7D3E8; }
+.btn-secondary{
+  width:100%; padding:14px 0; border-radius:14px; background:var(--bg); color:var(--text-2);
+  font-size:14.5px; font-weight:700; margin-top:10px;
+}
+.btn-danger-text{color:var(--expense); font-size:13.5px; font-weight:700;}
+
+/* category manage rows */
+.catrow{
+  display:flex; align-items:center; gap:12px; padding:12px 4px; border-bottom:1px solid var(--border);
+}
+.catrow:last-child{border-bottom:none;}
+.catrow .ic{width:38px;height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0;}
+.catrow .nm{flex:1; font-size:14.5px; font-weight:600;}
+.catrow .budgetval{font-size:13px; color:var(--text-3);}
+.catrow .grip{color:var(--text-3); padding:4px; flex-shrink:0;}
+.catrow .grip svg{width:18px;height:18px;}
+
+/* category tree (항목 관리 트리 구조) */
+.cattree-group{border-bottom:1px solid var(--border);}
+.cattree-group:last-child{border-bottom:none;}
+.cattree-group .catrow{border-bottom:none; cursor:pointer;}
+.treetoggle{color:var(--text-3); padding:4px; flex-shrink:0; transition:transform .15s ease; display:flex;}
+.treetoggle svg{width:16px;height:16px;}
+.cattree-children{padding:0 4px 14px 50px;}
+.cattree-subhead{font-size:11px; font-weight:700; color:var(--text-3); margin:6px 0 4px;}
+.cattree-leaf{display:flex; align-items:center; justify-content:space-between; font-size:13.5px; color:var(--text-1); padding:6px 0;}
+.cattree-empty{font-size:13px; color:var(--text-3); padding:6px 0;}
+.cattree-addrow{display:flex; gap:8px; margin:4px 0 12px;}
+.cattree-addrow .textinput{flex:1; font-size:13px; padding:9px 12px;}
+.cattree-addrow button{width:auto; padding:0 14px; margin-top:0; font-size:12.5px; color:var(--primary); font-weight:700; white-space:nowrap; background:var(--primary-light);}
+
+.toast{
+  position:absolute; bottom:calc(var(--tab-h) + var(--safe-bottom) + 18px); left:50%;
+  transform:translate(-50%, 10px); background:#1A1D29; color:#fff; padding:12px 20px; border-radius:12px;
+  font-size:13.5px; font-weight:600; z-index:120; opacity:0; transition:all .25s ease; pointer-events:none;
+  white-space:nowrap;
+}
+.toast.show{opacity:1; transform:translate(-50%,0);}
+
+.settings-group{margin-bottom:22px;}
+.settings-group-title{font-size:12.5px; font-weight:700; color:var(--text-3); margin:0 4px 8px;}
+.settings-row{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:12px;
+  background:var(--card); padding:15px 16px; border-radius:var(--radius-sm); margin-bottom:1px;
+}
+.settings-row.grouped{border-radius:0;}
+.settings-group .settings-row:first-child{border-radius:14px 14px 0 0;}
+.settings-group .settings-row:last-child{border-radius:0 0 14px 14px; margin-bottom:0;}
+.settings-group .settings-row:only-child{border-radius:14px;}
+.settings-label{font-size:14.5px; font-weight:600;}
+.settings-sub{font-size:12px; color:var(--text-3); margin-top:2px;}
+.settings-value{font-size:13.5px; color:var(--text-3);}
+.settings-row svg{width:18px; height:18px; flex-shrink:0; color:var(--text-3);}
+
+.switch{width:46px; height:27px; border-radius:14px; background:var(--border); position:relative; transition:background .2s;}
+.switch.on{background:var(--primary);}
+.switch::after{content:""; position:absolute; width:23px;height:23px; background:#fff; border-radius:50%; top:2px; left:2px; transition:left .2s; box-shadow:0 1px 3px rgba(0,0,0,0.2);}
+.switch.on::after{left:21px;}
+
+/* ===== PWA 설치 배너 ===== */
+.install-banner{
+  position:absolute; bottom:calc(var(--tab-h) + var(--safe-bottom) + 12px);
+  left:12px; right:12px;
+  background:var(--card); border-radius:16px;
+  box-shadow:0 8px 24px rgba(20,24,40,0.14);
+  display:flex; align-items:center; gap:12px;
+  padding:14px 16px;
+  z-index:130;
+  animation:slideUp .3s ease;
+}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:none;opacity:1}}
+.install-banner .ib-icon{font-size:32px; flex-shrink:0;}
+.install-banner .ib-text{flex:1; min-width:0;}
+.install-banner .ib-title{font-size:14px; font-weight:800; color:var(--text-1);}
+.install-banner .ib-sub{font-size:12px; color:var(--text-3); margin-top:2px;}
+.install-banner .ib-btn{
+  padding:9px 16px; border-radius:10px; background:var(--primary);
+  color:#fff; font-size:13px; font-weight:800; flex-shrink:0;
+}
+.install-banner .ib-close{
+  color:var(--text-3); padding:4px; flex-shrink:0; font-size:18px; line-height:1;
+}
+
+/* ===== 홈 뷰 탭 (달력/일일/월별) ===== */
+.home-view-tabs{
+  display:flex;
+  gap:0;
+  background:var(--card);
+  border-radius:var(--radius-sm);
+  padding:4px;
+  box-shadow:var(--shadow);
+  margin-bottom:0;
+}
+.home-view-tab{
+  flex:1;
+  padding:8px 0;
+  border-radius:8px;
+  font-size:13.5px;
+  font-weight:700;
+  color:var(--text-3);
+  transition:all .15s ease;
+  background:none;
+}
+.home-view-tab.active{
+  background:var(--primary);
+  color:#fff;
+  box-shadow:0 2px 6px rgba(45,108,223,0.25);
+}
+
+/* ===== 통계 집계 행 ===== */
+.stats-agg-row {
+  display: flex;
+  align-items: center;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 8px;
+}
+.stats-agg-row:last-of-type { border-bottom: none; }
+.stats-agg-label {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.stats-agg-count {
+  font-size: 12.5px;
+  color: var(--text-3);
+  min-width: 36px;
+  text-align: right;
+  flex-shrink: 0;
+}
+.stats-agg-amt {
+  font-size: 14.5px;
+  font-weight: 700;
+  min-width: 100px;
+  text-align: right;
+  flex-shrink: 0;
+}
+.stats-agg-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0 6px;
+  border-top: 1.5px solid var(--border);
+  font-size: 13.5px;
+}
+.income { color: var(--primary); }
+.expense { color: var(--expense); }
+.period-chip {
+  padding: 7px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  background: var(--card);
+  color: var(--text-2);
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow);
+  flex-shrink: 0;
+}
+.period-chip.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+.stat-bar-amt {
+  font-size: 11.5px;
+  color: var(--text-2);
+  min-width: 70px;
+  text-align: right;
+  margin-right: 4px;
+}
+/* ===== 누적 자산 배너 ===== */
+.total-assets-banner{
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+.total-assets-banner::after{
+  content:"";
+  position:absolute;
+  width:120px;height:120px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.06);
+  right:-40px; top:-50px;
+}
+.total-assets-left{}
+.total-assets-label{
+  font-size:12px;
+  color:rgba(255,255,255,0.75);
+  font-weight:600;
+  margin-bottom:3px;
+}
+.total-assets-value{
+  font-size:26px;
+  font-weight:800;
+  color:#fff;
+  letter-spacing:-0.5px;
+}
+.total-assets-right{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:4px;
+  z-index:1;
+}
+.total-assets-sub{
+  font-size:11.5px;
+  color:rgba(255,255,255,0.7);
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:4px;
+}
+.total-assets-sub span{
+  color:#fff;
+  font-size:12.5px;
+  font-weight:700;
+}
+
+.cal-summary-row{
+  display:flex;
+  background:var(--card);
+  border-radius:var(--radius-md);
+  box-shadow:var(--shadow);
+  padding:16px 4px;
+  margin-bottom:14px;
+}
+.cal-summary-col{flex:1; text-align:center; position:relative;}
+.cal-summary-col:not(:last-child)::after{
+  content:""; position:absolute; right:0; top:6px; bottom:6px; width:1px; background:var(--border);
+}
+.cal-summary-label{font-size:12.5px; color:var(--text-3); font-weight:600; margin-bottom:5px;}
+.cal-summary-value{font-size:16px; font-weight:800;}
+.cal-summary-value.income{color:var(--primary);}
+.cal-summary-value.expense{color:var(--expense);}
+
+.cal-month-nav{
+  display:flex; align-items:center; justify-content:center; gap:18px;
+  padding:6px 0 14px;
+}
+.cal-month-nav button{color:var(--text-2); padding:6px;}
+.cal-month-nav .lbl{font-size:16px; font-weight:800; min-width:110px; text-align:center;}
+
+.cal-grid{
+  background:var(--card);
+  border-radius:var(--radius-md);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.cal-weekdays{display:grid; grid-template-columns:repeat(7,1fr); padding:10px 0 4px;}
+.cal-weekdays span{text-align:center; font-size:11.5px; font-weight:700; color:var(--text-3);}
+.cal-weekdays span:first-child{color:var(--expense);}
+.cal-weekdays span:last-child{color:var(--primary);}
+
+.cal-days{display:grid; grid-template-columns:repeat(7,1fr);}
+.cal-day{
+  position:relative;
+  min-height:58px;
+  padding:6px 3px 4px;
+  border-top:1px solid var(--border);
+  display:flex; flex-direction:column; align-items:center;
+  -webkit-tap-highlight-color:transparent;
+}
+.cal-day.other-month{opacity:0.32;}
+.cal-day .dnum{
+  font-size:13px; font-weight:700; color:var(--text-1);
+  width:22px; height:22px; display:flex; align-items:center; justify-content:center;
+  border-radius:50%;
+}
+.cal-day.is-sun .dnum{color:var(--expense);}
+.cal-day.is-sat .dnum{color:var(--primary);}
+.cal-day.is-today .dnum{background:var(--text-1); color:#fff;}
+.cal-day .damt{font-size:10px; font-weight:700; margin-top:3px; line-height:1.3; text-align:center;}
+.cal-day .damt.income{color:var(--primary);}
+.cal-day .damt.expense{color:var(--expense);}
+.cal-day:active{background:var(--bg);}
+
+/* ===== Day detail page ===== */
+.daydetail-head{
+  display:flex; align-items:center; gap:10px; margin-bottom:14px;
+}
+.daydetail-head button{color:var(--text-2); padding:4px;}
+.daydetail-head h2{font-size:19px; font-weight:800;}
+.daydetail-summary{
+  display:flex; gap:16px; font-size:13px; color:var(--text-2); margin-bottom:16px; padding:0 2px;
+}
+.daydetail-summary b.income{color:var(--primary); font-weight:700;}
+.daydetail-summary b.expense{color:var(--expense); font-weight:700;}
+.day-add-row{display:flex; gap:10px; margin-bottom:18px;}
+.day-add-btn{
+  flex:1; padding:13px 0; border-radius:14px; font-size:14.5px; font-weight:800;
+  display:flex; align-items:center; justify-content:center; gap:6px;
+}
+.day-add-btn.income{background:var(--primary-light); color:var(--primary);}
+.day-add-btn.expense{background:var(--expense-light); color:var(--expense);}
+.day-add-btn svg{width:16px;height:16px;}
+</style>
 </head>
 <body>
+<div id="app"></div>
+<script src="xlsx.full.min.js"></script>
+<script src="app.js"></script>
+<script>
+// ===== 서비스워커 등록 =====
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(reg => console.log('[SW] 등록 완료:', reg.scope))
+      .catch(err => console.warn('[SW] 등록 실패:', err));
+  });
+}
 
-<!-- HERO -->
-<header class="hero">
-  <div class="hero-cross">✝</div>
-  <h1>Worship<span>PPT</span></h1>
-  <p class="hero-sub">한국 교회 예배 PPT 통합 관리 프로그램</p>
-  <p class="hero-en">Korean Church Worship Presentation Management System for Windows</p>
-  <div class="hero-cta">
-    <a class="btn btn-primary" href="https://smartstore.naver.com/dream-mart-switch/products/13364764824" target="_blank" rel="noopener">
-      다운로드 · Download
-    </a>
-    <a class="btn btn-secondary" href="https://github.com/jaeseolkang/worship-admin/blob/main/WorshipPPT_User_Guide.html">
-      사용 설명서
-    </a>
-  </div>
-</header>
+// ===== PWA 설치 배너 =====
+let deferredPrompt = null;
 
-<!-- ABOUT -->
-<section>
-  <div class="container">
-    <p class="section-label">About</p>
-    <h2>예배 현장에서 바로 쓰는<br>PPT 자동화 도구</h2>
-    <div class="divider"></div>
-    <p class="lead">
-      WorshipPPT는 실제 교회 예배 환경에 맞게 설계된 Windows 데스크톱 프로그램입니다.
-      PowerPoint COM 자동화를 기반으로 찬양·찬송·성경 PPT를 빠르게 구성하고,
-      모바일 미러링으로 성도 스마트폰에 실시간 동기화합니다.
-    </p>
-    <p class="lead" style="margin-top:12px; font-size:.9rem; color:#7b7b9d;">
-      WorshipPPT is a Windows desktop application built for Korean church worship services.
-      It automates PowerPoint slide management for praise songs, hymns, and Bible verses,
-      with a mobile mirroring interface for real-time congregation display.
-    </p>
-  </div>
-</section>
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
 
-<!-- FEATURES -->
-<section class="features">
-  <div class="container">
-    <p class="section-label">Features</p>
-    <h2>주요 기능</h2>
-    <div class="divider"></div>
-    <div class="feat-grid">
+  // 이미 설치됐거나 배너를 닫은 적 있으면 표시 안 함
+  if (localStorage.getItem('pwa-banner-dismissed')) return;
 
-      <div class="feat-card">
-        <div class="feat-icon">🎵</div>
-        <h3>찬양 PPT 관리</h3>
-        <p>찬양 슬라이드를 PPTX 형식으로 생성·편집. 악보 이미지, 내비게이션 점, 텍스트박스 레이아웃 자동 구성.</p>
-      </div>
-
-      <div class="feat-card">
-        <div class="feat-icon">📖</div>
-        <h3>성경 / 찬송가 검색</h3>
-        <p>어절 단위 한국어 검색으로 성경 구절·찬송가를 빠르게 찾아 슬라이드에 삽입.</p>
-      </div>
-
-      <div class="feat-card">
-        <div class="feat-icon">📱</div>
-        <h3>모바일 미러링</h3>
-        <p>같은 Wi-Fi 환경에서 iOS·Android 브라우저로 현재 슬라이드를 실시간 동기화. PWA 오프라인 캐시 지원.</p>
-      </div>
-
-      <div class="feat-card">
-        <div class="feat-icon">⚡</div>
-        <h3>PowerPoint 직접 제어</h3>
-        <p>COM 자동화로 PowerPoint를 직접 제어. 슬라이드 전환, 예배 시작·종료, ESC 키오스크 모드 지원.</p>
-      </div>
-
-      <div class="feat-card">
-        <div class="feat-icon">💾</div>
-        <h3>JPEG 슬라이드 캐시</h3>
-        <p>모든 슬라이드를 JPEG로 미리 내보내 모바일 로딩 속도를 최적화.</p>
-      </div>
-
-      <div class="feat-card">
-        <div class="feat-icon">🗂️</div>
-        <h3>예배 순서 통합 관리</h3>
-        <p>찬양·설교 자막·특순·광고 등 예배 전체 PPT를 한 화면에서 구성하고 순서대로 제어.</p>
-      </div>
-
+  const banner = document.createElement('div');
+  banner.className = 'install-banner';
+  banner.innerHTML = `
+    <span class="ib-icon">📒</span>
+    <div class="ib-text">
+      <div class="ib-title">앱으로 설치하기</div>
+      <div class="ib-sub">오프라인에서도 사용 가능해요</div>
     </div>
-  </div>
-</section>
+    <button class="ib-btn" id="ibInstall">설치</button>
+    <button class="ib-close" id="ibClose">✕</button>
+  `;
+  document.getElementById('app').appendChild(banner);
 
-<!-- HOW IT WORKS -->
-<section class="how">
-  <div class="container">
-    <p class="section-label">Workflow</p>
-    <h2>사용 흐름</h2>
-    <div class="divider"></div>
-    <div class="steps">
-      <div class="step">
-        <h3>예배 PPT 준비</h3>
-        <p>찬양·설교 자막 슬라이드를 찬양 검색 또는 직접 편집으로 생성.</p>
-      </div>
-      <div class="step">
-        <h3>슬라이드 내보내기</h3>
-        <p>JPEG 캐시를 생성해 모바일 미러링 속도 최적화.</p>
-      </div>
-      <div class="step">
-        <h3>예배 시작</h3>
-        <p>PowerPoint를 키오스크 모드로 실행, 본 화면에 투영.</p>
-      </div>
-      <div class="step">
-        <h3>모바일 동기화</h3>
-        <p>성도·음향 담당자 스마트폰에서 현재 슬라이드 실시간 확인.</p>
-      </div>
-    </div>
-  </div>
-</section>
+  document.getElementById('ibInstall').addEventListener('click', async () => {
+    banner.remove();
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log('[PWA] 설치 결과:', outcome);
+    deferredPrompt = null;
+  });
 
-<!-- SPECS -->
-<section class="specs">
-  <div class="container">
-    <p class="section-label">Requirements</p>
-    <h2>시스템 요구 사항</h2>
-    <div class="divider"></div>
-    <table class="spec-table">
-      <tr><td>운영체제</td><td>Windows 10 / 11 (64-bit)</td></tr>
-      <tr><td>필수 소프트웨어</td><td>Microsoft PowerPoint (2016 이상 권장)</td></tr>
-      <tr><td>런타임</td><td>.NET 6.0 이상</td></tr>
-      <tr><td>네트워크</td><td>모바일 미러링 시 로컬 Wi-Fi 필요</td></tr>
-      <tr><td>언어</td><td>한국어</td></tr>
-      <tr><td>설치 방식</td><td>MSI 인스톨러</td></tr>
-    </table>
-  </div>
-</section>
+  document.getElementById('ibClose').addEventListener('click', () => {
+    banner.remove();
+    localStorage.setItem('pwa-banner-dismissed', '1');
+  });
+});
 
-<!-- DOWNLOAD CTA -->
-<section class="download">
-  <div class="container">
-    <p class="section-label" style="color:#6666aa;">Download</p>
-    <h2>지금 바로 시작하기</h2>
-    <p class="lead">네이버 스마트스토어에서 다운로드할 수 있습니다.</p>
-    <div class="hero-cta">
-      <a class="btn btn-primary" href="https://smartstore.naver.com/dream-mart-switch/products/13364764824" target="_blank" rel="noopener">
-        스마트스토어에서 받기
-      </a>
-      <a class="btn btn-secondary" href="https://github.com/jaeseolkang/worship-admin/blob/main/WorshipPPT_User_Guide.html">
-        사용 설명서 보기
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <p>WorshipPPT &mdash; Korean Church Worship Presentation Software</p>
-  <p>
-    <a href="https://github.com/jaeseolkang/worship-admin" target="_blank" rel="noopener">GitHub</a>
-    &nbsp;·&nbsp;
-    <a href="https://smartstore.naver.com/dream-mart-switch/products/13364764824" target="_blank" rel="noopener">Naver SmartStore</a>
-  </p>
-  <p style="margin-top:8px; font-size:.75rem;">
-    Keywords: 예배 PPT 프로그램, 교회 PPT, 찬양 PPT, worship presentation software Korea,
-    Korean church PowerPoint, church presentation software, 예배 프로그램 추천
-  </p>
-</footer>
-
+window.addEventListener('appinstalled', () => {
+  console.log('[PWA] 앱 설치 완료!');
+  deferredPrompt = null;
+});
+</script>
 </body>
 </html>
