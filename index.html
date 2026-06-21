@@ -1,0 +1,457 @@
+<!-- 2026-06-11 09:00 KST | 수정: Google Search Console 인증 메타태그 추가, 사용설명서 링크 GitHub 직접 연결 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="XY8K9_4qqOmSaxwbdLAP3FTZkWwzNIGVmquQlXg7ROE" />
+  <title>WorshipPPT — 한국 교회 예배 PPT 관리 프로그램</title>
+  <meta name="description" content="WorshipPPT는 한국 교회 예배를 위한 PowerPoint 자동화 관리 프로그램입니다. 찬양·성경·찬송 검색, 모바일 미러링, 슬라이드 내보내기 기능을 제공합니다. Korean church worship PPT management software for Windows." />
+  <meta name="keywords" content="예배 PPT, 교회 PPT, 워십PPT, WorshipPPT, Korean church presentation, worship presentation software, 찬양 PPT, 예배 프로그램, church PPT software Korea, 한국 교회 프로그램" />
+  <meta name="author" content="jaeseolkang" />
+  <meta property="og:title" content="WorshipPPT — 한국 교회 예배 PPT 관리 프로그램" />
+  <meta property="og:description" content="찬양·성경·찬송 검색, 모바일 미러링, PPT 자동화. 예배 현장에서 바로 쓰는 Windows 전용 프로그램." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://jaeseolkang.github.io/" />
+
+  <!-- Schema.org SoftwareApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "WorshipPPT",
+    "alternateName": ["워십PPT", "워쉽PPT", "교회 예배 PPT 프로그램"],
+    "description": "Korean church worship PowerPoint presentation management system. Features include praise song / hymn / Bible verse search, mobile mirroring for congregation display, automated slide export with JPEG cache, and live PowerPoint COM automation for real-time worship control.",
+    "applicationCategory": "MultimediaApplication",
+    "applicationSubCategory": "ChurchPresentationSoftware",
+    "operatingSystem": "Windows 10, Windows 11",
+    "inLanguage": ["ko", "en"],
+    "offers": {
+      "@type": "Offer",
+      "url": "https://smartstore.naver.com/dream-mart-switch/products/13364764824",
+      "priceCurrency": "KRW",
+      "availability": "https://schema.org/InStock"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "jaeseolkang"
+    },
+    "softwareRequirements": "Microsoft PowerPoint, .NET 6+",
+    "featureList": [
+      "찬양 PPT 자동 생성 및 수정",
+      "성경 / 찬송가 검색",
+      "모바일 미러링 (iOS / Android)",
+      "슬라이드 JPEG 캐시 내보내기",
+      "예배 순서 PPT 관리",
+      "로컬 HTTP 서버 연동",
+      "PowerPoint COM 자동화",
+      "Korean praise song management",
+      "Mobile congregation display mirror",
+      "Live worship slide control"
+    ],
+    "url": "https://jaeseolkang.github.io/"
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:      #1a1a2e;
+      --ink2:     #3d3d5c;
+      --ink3:     #7b7b9d;
+      --gold:     #c9a84c;
+      --gold-lt:  #f0d98a;
+      --bg:       #f7f6f2;
+      --bg2:      #eeecea;
+      --white:    #ffffff;
+      --radius:   12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans KR', 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.7;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--ink);
+      color: var(--white);
+      padding: 80px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 60% 0%, #2e2e52 0%, transparent 65%),
+                  radial-gradient(ellipse at 20% 100%, #1e1e38 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-cross {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      opacity: .55;
+      letter-spacing: .3em;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -.02em;
+      line-height: 1.15;
+      position: relative;
+    }
+    .hero h1 span {
+      color: var(--gold-lt);
+    }
+    .hero-sub {
+      margin-top: 16px;
+      font-size: 1.1rem;
+      color: #c2c2d8;
+      font-weight: 300;
+      position: relative;
+    }
+    .hero-en {
+      margin-top: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: .9rem;
+      color: #8888aa;
+      position: relative;
+    }
+    .hero-cta {
+      margin-top: 40px;
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+    }
+    .btn {
+      display: inline-block;
+      padding: 13px 30px;
+      border-radius: 8px;
+      font-size: .95rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.25); }
+    .btn-primary {
+      background: var(--gold);
+      color: var(--ink);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: #c2c2d8;
+      border: 1px solid #3a3a5c;
+    }
+
+    /* ── SECTION ── */
+    section { padding: 72px 24px; }
+    .container { max-width: 900px; margin: 0 auto; }
+    .section-label {
+      font-size: .75rem;
+      font-weight: 500;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    h2 {
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 700;
+      letter-spacing: -.02em;
+      line-height: 1.2;
+      color: var(--ink);
+    }
+    .lead {
+      margin-top: 14px;
+      font-size: 1.05rem;
+      color: var(--ink2);
+      max-width: 620px;
+    }
+
+    /* ── FEATURES GRID ── */
+    .features { background: var(--white); }
+    .feat-grid {
+      margin-top: 44px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .feat-card {
+      background: var(--bg);
+      border-radius: var(--radius);
+      padding: 26px 24px;
+      border: 1px solid var(--bg2);
+    }
+    .feat-icon {
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+    }
+    .feat-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .feat-card p {
+      font-size: .875rem;
+      color: var(--ink3);
+      line-height: 1.6;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .how { background: var(--bg); }
+    .steps {
+      margin-top: 44px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 24px;
+      counter-reset: step;
+    }
+    .step {
+      counter-increment: step;
+      padding: 24px;
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1px solid var(--bg2);
+      position: relative;
+    }
+    .step::before {
+      content: counter(step);
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      width: 26px; height: 26px;
+      line-height: 24px;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+    .step h3 { font-size: .95rem; font-weight: 600; margin-bottom: 6px; }
+    .step p  { font-size: .85rem; color: var(--ink3); }
+
+    /* ── SPEC TABLE ── */
+    .specs { background: var(--white); }
+    .spec-table {
+      margin-top: 36px;
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .9rem;
+    }
+    .spec-table tr { border-bottom: 1px solid var(--bg2); }
+    .spec-table td { padding: 14px 8px; }
+    .spec-table td:first-child { color: var(--ink3); width: 38%; }
+    .spec-table td:last-child  { font-weight: 500; }
+
+    /* ── DOWNLOAD ── */
+    .download {
+      background: var(--ink);
+      color: var(--white);
+      text-align: center;
+    }
+    .download h2 { color: var(--white); }
+    .download .lead { color: #9999bb; max-width: 500px; margin: 14px auto 0; }
+    .download .hero-cta { margin-top: 36px; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #13132a;
+      color: #55556a;
+      text-align: center;
+      padding: 32px 24px;
+      font-size: .8rem;
+      line-height: 2;
+    }
+    footer a { color: #7777aa; text-decoration: none; }
+
+    /* ── DIVIDER ── */
+    .divider {
+      width: 40px; height: 3px;
+      background: var(--gold);
+      border-radius: 2px;
+      margin: 18px 0;
+    }
+
+    @media (max-width: 600px) {
+      section { padding: 52px 20px; }
+      .hero   { padding: 60px 20px 56px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-cross">✝</div>
+  <h1>Worship<span>PPT</span></h1>
+  <p class="hero-sub">한국 교회 예배 PPT 통합 관리 프로그램</p>
+  <p class="hero-en">Korean Church Worship Presentation Management System for Windows</p>
+  <div class="hero-cta">
+    <a class="btn btn-primary" href="https://smartstore.naver.com/dream-mart-switch/products/13364764824" target="_blank" rel="noopener">
+      다운로드 · Download
+    </a>
+    <a class="btn btn-secondary" href="https://github.com/jaeseolkang/worship-admin/blob/main/WorshipPPT_User_Guide.html">
+      사용 설명서
+    </a>
+  </div>
+</header>
+
+<!-- ABOUT -->
+<section>
+  <div class="container">
+    <p class="section-label">About</p>
+    <h2>예배 현장에서 바로 쓰는<br>PPT 자동화 도구</h2>
+    <div class="divider"></div>
+    <p class="lead">
+      WorshipPPT는 실제 교회 예배 환경에 맞게 설계된 Windows 데스크톱 프로그램입니다.
+      PowerPoint COM 자동화를 기반으로 찬양·찬송·성경 PPT를 빠르게 구성하고,
+      모바일 미러링으로 성도 스마트폰에 실시간 동기화합니다.
+    </p>
+    <p class="lead" style="margin-top:12px; font-size:.9rem; color:#7b7b9d;">
+      WorshipPPT is a Windows desktop application built for Korean church worship services.
+      It automates PowerPoint slide management for praise songs, hymns, and Bible verses,
+      with a mobile mirroring interface for real-time congregation display.
+    </p>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="container">
+    <p class="section-label">Features</p>
+    <h2>주요 기능</h2>
+    <div class="divider"></div>
+    <div class="feat-grid">
+
+      <div class="feat-card">
+        <div class="feat-icon">🎵</div>
+        <h3>찬양 PPT 관리</h3>
+        <p>찬양 슬라이드를 PPTX 형식으로 생성·편집. 악보 이미지, 내비게이션 점, 텍스트박스 레이아웃 자동 구성.</p>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">📖</div>
+        <h3>성경 / 찬송가 검색</h3>
+        <p>어절 단위 한국어 검색으로 성경 구절·찬송가를 빠르게 찾아 슬라이드에 삽입.</p>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">📱</div>
+        <h3>모바일 미러링</h3>
+        <p>같은 Wi-Fi 환경에서 iOS·Android 브라우저로 현재 슬라이드를 실시간 동기화. PWA 오프라인 캐시 지원.</p>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">⚡</div>
+        <h3>PowerPoint 직접 제어</h3>
+        <p>COM 자동화로 PowerPoint를 직접 제어. 슬라이드 전환, 예배 시작·종료, ESC 키오스크 모드 지원.</p>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">💾</div>
+        <h3>JPEG 슬라이드 캐시</h3>
+        <p>모든 슬라이드를 JPEG로 미리 내보내 모바일 로딩 속도를 최적화.</p>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">🗂️</div>
+        <h3>예배 순서 통합 관리</h3>
+        <p>찬양·설교 자막·특순·광고 등 예배 전체 PPT를 한 화면에서 구성하고 순서대로 제어.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <div class="container">
+    <p class="section-label">Workflow</p>
+    <h2>사용 흐름</h2>
+    <div class="divider"></div>
+    <div class="steps">
+      <div class="step">
+        <h3>예배 PPT 준비</h3>
+        <p>찬양·설교 자막 슬라이드를 찬양 검색 또는 직접 편집으로 생성.</p>
+      </div>
+      <div class="step">
+        <h3>슬라이드 내보내기</h3>
+        <p>JPEG 캐시를 생성해 모바일 미러링 속도 최적화.</p>
+      </div>
+      <div class="step">
+        <h3>예배 시작</h3>
+        <p>PowerPoint를 키오스크 모드로 실행, 본 화면에 투영.</p>
+      </div>
+      <div class="step">
+        <h3>모바일 동기화</h3>
+        <p>성도·음향 담당자 스마트폰에서 현재 슬라이드 실시간 확인.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPECS -->
+<section class="specs">
+  <div class="container">
+    <p class="section-label">Requirements</p>
+    <h2>시스템 요구 사항</h2>
+    <div class="divider"></div>
+    <table class="spec-table">
+      <tr><td>운영체제</td><td>Windows 10 / 11 (64-bit)</td></tr>
+      <tr><td>필수 소프트웨어</td><td>Microsoft PowerPoint (2016 이상 권장)</td></tr>
+      <tr><td>런타임</td><td>.NET 6.0 이상</td></tr>
+      <tr><td>네트워크</td><td>모바일 미러링 시 로컬 Wi-Fi 필요</td></tr>
+      <tr><td>언어</td><td>한국어</td></tr>
+      <tr><td>설치 방식</td><td>MSI 인스톨러</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- DOWNLOAD CTA -->
+<section class="download">
+  <div class="container">
+    <p class="section-label" style="color:#6666aa;">Download</p>
+    <h2>지금 바로 시작하기</h2>
+    <p class="lead">네이버 스마트스토어에서 다운로드할 수 있습니다.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="https://smartstore.naver.com/dream-mart-switch/products/13364764824" target="_blank" rel="noopener">
+        스마트스토어에서 받기
+      </a>
+      <a class="btn btn-secondary" href="https://github.com/jaeseolkang/worship-admin/blob/main/WorshipPPT_User_Guide.html">
+        사용 설명서 보기
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>WorshipPPT &mdash; Korean Church Worship Presentation Software</p>
+  <p>
+    <a href="https://github.com/jaeseolkang/worship-admin" target="_blank" rel="noopener">GitHub</a>
+    &nbsp;·&nbsp;
+    <a href="https://smartstore.naver.com/dream-mart-switch/products/13364764824" target="_blank" rel="noopener">Naver SmartStore</a>
+  </p>
+  <p style="margin-top:8px; font-size:.75rem;">
+    Keywords: 예배 PPT 프로그램, 교회 PPT, 찬양 PPT, worship presentation software Korea,
+    Korean church PowerPoint, church presentation software, 예배 프로그램 추천
+  </p>
+</footer>
+
+</body>
+</html>
