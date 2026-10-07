@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="교회회계 프로그램 사용 신청을 하세요." />
-  <title>교회회계 프로그램 받기 | DREAM SW</title>
+  <meta name="description" content="교회회계 앱 사용 신청을 하세요." />
+  <title>교회회계 앱 받기 | DREAM SW</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -96,34 +96,34 @@
   <header><a href="/curch_index.html">DREAM SW 교회회계</a></header>
   <main>
     <p class="eyebrow">CHURCH ACCOUNTING</p>
-    <h1>교회회계 프로그램 받기</h1>
-    <p class="intro">이메일을 등록하면 교회회계 프로그램 접속 링크가 열립니다.</p>
+    <h1>교회회계 앱 받기</h1>
+    <p class="intro">이메일을 등록하면 교회회계 앱 접속 링크가 열립니다.</p>
 
     <form id="downloadForm" action="https://formspree.io/f/mbgloaao" method="POST">
-      <input type="hidden" name="_subject" value="교회회계 프로그램 신청" />
-      <input type="hidden" name="requestType" value="교회회계 프로그램" />
+      <input type="hidden" name="_subject" value="교회회계 앱 신청" />
+      <input type="hidden" name="requestType" value="교회회계 앱" />
       <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-10000px;" />
       <label for="email">이메일 주소</label>
       <input id="email" name="email" type="email" autocomplete="email" placeholder="name@example.com" required />
       <label class="consent">
-        <input type="checkbox" name="consent" value="교회회계 프로그램 제공 및 도입 안내 수신" required />
-        <span>교회회계 프로그램 제공 및 도입 안내를 위해 이메일을 수집·이용하는 데 동의합니다.</span>
+        <input type="checkbox" name="consent" value="교회회계 앱 제공 및 도입 안내 수신" required />
+        <span>교회회계 앱 제공 및 도입 안내를 위해 이메일을 수집·이용하는 데 동의합니다.</span>
       </label>
-      <button id="submitButton" type="submit">교회회계 프로그램 신청</button>
+      <button id="submitButton" type="submit">교회회계 앱 신청</button>
       <p id="formStatus" role="status" aria-live="polite"></p>
     </form>
 
     <section id="successPanel" hidden aria-live="polite">
       <h2>신청이 접수되었습니다.</h2>
-      <p id="successMessage">아래 버튼에서 교회회계 프로그램을 열 수 있습니다.</p>
-      <a id="appLink" class="download-link" href="#" target="_blank" rel="noopener">교회회계 프로그램 열기</a>
+      <p id="successMessage">아래 버튼에서 교회회계 앱을 열 수 있습니다.</p>
+      <a id="appLink" class="download-link" href="#" target="_blank" rel="noopener">교회회계 앱 열기</a>
       <p class="install-note" style="margin-top:14px;">스마트폰에서는 열린 화면에서 <b>홈 화면에 추가</b>(아이폰) 또는 <b>앱으로 설치하기</b>(안드로이드)를 선택하면 앱처럼 사용할 수 있습니다.</p>
     </section>
     <a class="back-link" href="/curch_index.html">소개 페이지로 돌아가기</a>
   </main>
 
   <script>
-    // TODO: 교회회계 프로그램의 접속(또는 다운로드) 주소를 여기에 입력하세요.
+    // TODO: 교회회계 앱의 접속(또는 다운로드) 주소를 여기에 입력하세요.
     // 비워 두면 링크 버튼 대신 "이메일로 안내드립니다" 문구가 표시됩니다.
     const APP_URL = '';
 
